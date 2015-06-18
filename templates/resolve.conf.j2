@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+{% for ip in f5base_nameserver_ips %}
+nameserver {{ ip }}
+{% endfor %}
+options rotate
+options timeout:1

@@ -1,0 +1,81 @@
+---
+
+# The following two tasks are best put in the pre tasks of your main play
+# If you do that then set register: apt_update and apt_upgrade
+# see example below - place above your roles/tasks blocks
+
+##################################################################
+#
+#   pre_tasks:
+#
+#   - name: Pretask | Update apt cache
+#     apt: update_cache=yes cache_valid_time=3600
+#     tags: [base,pre]
+#     register: apt_update
+#
+#   - name: Pretask | Run apt-get upgrade
+#     apt: upgrade=dist
+#     tags: [base,pre]
+#     register: apt_upgrade
+#
+###################################################################
+
+
+- name: Pretask | Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  when: apt_update is not defined
+
+- name: Pretask | Run apt-get upgrade
+  apt: upgrade=dist
+  when: apt_upgrade is not defined
+
+# Remove lanscape as it is not requoired n ansible controlled server
+# and we get a performance improvement
+# https://www.byte.nl/blog/ansible-ubuntu-30-percent-speed-increase/
+- name: Remove packages | Speed up Ansible by purging landscape-common
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - landscape-client
+    - landscape-common
+    - whoopsie
+  sudo: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install unattended-upgrades
+  apt:
+    pkg: unattended-upgrades
+    state: present
+  sudo: true
+
+- name: Install Update notifier
+  apt:
+    pkg: update-notifier
+    state: present
+  sudo: true
+
+- name: Adjust APT update intervals
+  template:
+    src: apt_periodic.j2
+    dest: /etc/apt/apt.conf.d/10periodic
+  sudo: true
+
+- name: Adjust APT unattended upgrades
+  template:
+    src: 50unattended-upgrades.j2
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+  sudo: true
+
+# TODO check email address for update notifications
+# default seems OK on Debian
+# - name: Make sure unattended-upgrades only installs from $ubuntu_release-security
+#   action: lineinfile dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="$ubuntu_release-updates" state=absent
+
+#- name install apticron to enable notifications
+#  apt: name=apticron
+#  sudo: true
+
+# - name: Install python-software-properties so the apt_repository module will work properly
+#  apt: name=python-software-properties

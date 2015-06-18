@@ -1,0 +1,42 @@
+---
+
+# defaults for hostname
+hostname_fqdn: "{{ansible_fqdn}}"
+hostname_name: "{{hostname_fqdn.split('.').0}}"
+
+# defaults for Apt Periodic
+
+# Enable the update/upgrade script (0=disable)
+apt_periodic_enable: "1"
+
+# Do "apt-get update" automatically every n-days (0=disable)
+apt_periodic_update: "1"
+
+# Do "apt-get upgrade --download-only" every n-days (0=disable)
+apt_periodic_dload_packages: "1"
+
+# Run the "unattended-upgrade" security upgrade script
+# every n-days (0=disabled)
+# Requires the package "unattended-upgrades" and will write
+# a log in /var/log/unattended-upgrades
+apt_periodic_unattended_upgrade: "1"
+
+# Do "apt-get autoclean" every n-days (0=disable)
+apt_periodic_autoclean: "7"
+
+apt_origin_patterns:
+   - "origin=Debian,archive=stable,label=Debian-Security"
+   - "origin=Debian,archive=oldstable,label=Debian-Security"
+
+srv_to_stop:
+  - rpcbind
+
+# Name Server Update
+nameserver_update: False
+
+# These are set to OpenDNS / google
+f5base_nameserver_ips:
+ - 208.67.220.220
+ - 8.8.4.4
+ - 208.67.222.222
+ - 8.8.8.8

@@ -1,0 +1,14 @@
+---
+
+# MOTD
+# see http://www.howtogeek.com/104708/how-to-customize-ubuntus-message-of-the-day/
+# this simply bypasses the landscape stuff on Ubuntu
+
+- name: Update motd
+  template: src=motd.j2 dest=/etc/motd
+  sudo: true
+  tags:
+     - configuration
+     - motd
+
+      
