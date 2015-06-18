@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: "George Boobyer"
-  description: Initial provisoin role (First5) to create Ansible user
+  description: Initial provision role (First5) to create base setup
   company: Blue-Bag
   license: "license (BSD, MIT)"
   min_ansible_version: 1.4
