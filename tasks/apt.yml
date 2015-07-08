@@ -29,6 +29,13 @@
   apt: upgrade=dist
   when: apt_upgrade is not defined
 
+- name: Install packages | Required packages that may not be installed
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  sudo: true
+  with_items: f5base_packages_required
+
 # Remove lanscape as it is not requoired n ansible controlled server
 # and we get a performance improvement
 # https://www.byte.nl/blog/ansible-ubuntu-30-percent-speed-increase/

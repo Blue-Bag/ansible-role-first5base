@@ -40,3 +40,6 @@ f5base_nameserver_ips:
  - 8.8.4.4
  - 208.67.222.222
  - 8.8.8.8
+
+f5base_packages_required:
+ - rsync
