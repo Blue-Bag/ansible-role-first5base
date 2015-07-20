@@ -6,7 +6,7 @@
 
 - include: apt.yml
   when: ansible_os_family == 'Debian'
-  
+
 - include: host.yml
 
 - include: motd.yml
@@ -17,6 +17,6 @@
      name: "{{ item }}"
      state: stopped
      enabled: no
-  with_items: srv_to_stop 
-  when: inventory_hostname not in groups['local']  
+  with_items: srv_to_stop
+  when: inventory_hostname not in groups['local']
   ignore_errors: yes
