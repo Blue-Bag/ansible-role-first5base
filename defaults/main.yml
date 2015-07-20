@@ -43,3 +43,5 @@ f5base_nameserver_ips:
 
 f5base_packages_required:
  - rsync
+ - vim
+ - patch
