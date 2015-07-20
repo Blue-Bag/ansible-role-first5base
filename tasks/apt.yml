@@ -36,7 +36,7 @@
   sudo: true
   with_items: f5base_packages_required
 
-# Remove lanscape as it is not requoired n ansible controlled server
+# Remove landscape as it is not required on ansible controlled server
 # and we get a performance improvement
 # https://www.byte.nl/blog/ansible-ubuntu-30-percent-speed-increase/
 - name: Remove packages | Speed up Ansible by purging landscape-common
