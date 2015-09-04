@@ -19,10 +19,9 @@ Unattended-Upgrade::Origins-Pattern {
 {% else %}
 // Automatically upgrade packages from these (origin:archive) pairs
 Unattended-Upgrade::Allowed-Origins {
-	"${distro_id}:${distro_codename}-security";
-//	"${distro_id}:${distro_codename}-updates";
-//	"${distro_id}:${distro_codename}-proposed";
-//	"${distro_id}:${distro_codename}-backports";
+  {% for allowed_origin in apt_allowed_origins %}
+        "{{ allowed_origin }}";
+  {% endfor %}
 };
 
 {% endif %}
@@ -68,9 +67,11 @@ Unattended-Upgrade::Package-Blacklist {
 
 // Automatically reboot *WITHOUT CONFIRMATION* if a
 // the file /var/run/reboot-required is found after the upgrade
-//Unattended-Upgrade::Automatic-Reboot "false";
-
-
+{$ if apt_automatic_reboot %}
+Unattended-Upgrade::Automatic-Reboot "false";
+{% else %}
+Unattended-Upgrade::Automatic-Reboot "false";
+{% endif %}
 // Use apt bandwidth limit feature, this example limits the download
 // speed to 70kb/sec
 //Acquire::http::Dl-Limit "70";
