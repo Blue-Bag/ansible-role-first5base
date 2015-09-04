@@ -15,4 +15,4 @@ APT::Periodic::Download-Upgradeable-Packages {{ apt_periodic_dload_packages|defa
 APT::Periodic::Unattended-Upgrade {{ apt_periodic_unattended_upgrade|default('"1"') }};
 
 // Do "apt-get autoclean" every n-days (0=disable)
-APT::Periodic::AutocleanInterval {{ apt_periodic_autoclean|default('"0"') }};
+APT::Periodic::AutocleanInterval {{ apt_periodic_autoclean|default('"7"') }};
