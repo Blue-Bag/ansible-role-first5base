@@ -31,7 +31,7 @@
 
 - name: Install packages | Required packages that may not be installed
   apt:
-    pkg: "{{ item }}"
+    name: "{{ item }}"
     state: present
   sudo: true
   with_items: f5base_packages_required
@@ -49,7 +49,7 @@
 # https://www.byte.nl/blog/ansible-ubuntu-30-percent-speed-increase/
 - name: Remove packages | Speed up Ansible by purging landscape-common
   apt:
-    pkg: "{{ item }}"
+    name: "{{ item }}"
     state: absent
     purge: yes
   with_items:
@@ -61,27 +61,29 @@
 
 - name: Install unattended-upgrades
   apt:
-    pkg: unattended-upgrades
+    name: unattended-upgrades
     state: present
   sudo: true
 
 - name: Install Update notifier
   apt:
-    pkg: update-notifier
+    name: update-notifier
     state: present
   sudo: true
 
-- name: Adjust APT update intervals
+- name: Copy unattended-upgrades configuration files in place.
   template:
-    src: apt_periodic.j2
-    dest: /etc/apt/apt.conf.d/10periodic
-  sudo: true
+    src: "{{ item }}.j2"
+    dest: /etc/apt/apt.conf.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 10periodic
+    - 50unattended-upgrades
 
-- name: Adjust APT unattended upgrades
-  template:
-    src: 50unattended-upgrades.j2
-    dest: /etc/apt/apt.conf.d/50unattended-upgrades
-  sudo: true
+
+
 
 # TODO check email address for update notifications
 # default seems OK on Debian
