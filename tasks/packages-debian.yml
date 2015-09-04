@@ -83,8 +83,6 @@
     - 50unattended-upgrades
 
 
-
-
 # TODO check email address for update notifications
 # default seems OK on Debian
 # - name: Make sure unattended-upgrades only installs from $ubuntu_release-security
