@@ -4,8 +4,11 @@
 # Essentials
 # http://www.howtoforge.com/how-to-configure-automatic-updates-on-debian-wheezy
 
-- include: apt.yml
+- include: packages-debian.yml
   when: ansible_os_family == 'Debian'
+
+- include: packages-redhat.yml
+  when: ansible_os_family == 'Redhat'
 
 - include: host.yml
 
