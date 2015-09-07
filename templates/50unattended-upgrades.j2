@@ -67,7 +67,7 @@ Unattended-Upgrade::Package-Blacklist {
 
 // Automatically reboot *WITHOUT CONFIRMATION* if a
 // the file /var/run/reboot-required is found after the upgrade
-{$ if apt_automatic_reboot %}
+{% if apt_automatic_reboot %}
 Unattended-Upgrade::Automatic-Reboot "false";
 {% else %}
 Unattended-Upgrade::Automatic-Reboot "false";
