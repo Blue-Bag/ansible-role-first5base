@@ -8,7 +8,7 @@
   when: ansible_os_family == 'Debian'
 
 - include: packages-redhat.yml
-  when: ansible_os_family == 'Redhat'
+  when: ansible_os_family == 'RedHat'
 
 - include: host.yml
 

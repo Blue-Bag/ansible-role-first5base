@@ -21,7 +21,7 @@
 ###################################################################
 
 
-- name: Pretask | Update apt cache
+- name: Pretask | Update apt cache | Debian
   apt: update_cache=yes cache_valid_time=3600
   when: apt_update is not defined
 
@@ -29,14 +29,14 @@
   apt: upgrade=dist
   when: apt_upgrade is not defined
 
-- name: Install packages | Required packages that may not be installed
+- name: Install packages | Required packages that may not be installed | Debian
   apt:
     name: "{{ item }}"
     state: present
   sudo: true
   with_items: f5base_packages_required
 
-- name: Ensure required packages are running and enabled at system start.
+- name: Ensure required packages are running and enabled at system start. | Debian
   service:
     name: "{{ item }}"
     state: started
@@ -47,7 +47,7 @@
 # Remove landscape as it is not required on ansible controlled server
 # and we get a performance improvement
 # https://www.byte.nl/blog/ansible-ubuntu-30-percent-speed-increase/
-- name: Remove packages | Speed up Ansible by purging landscape-common
+- name: Remove packages | Speed up Ansible by purging landscape-common | Debian
   apt:
     name: "{{ item }}"
     state: absent
@@ -59,19 +59,19 @@
   sudo: true
   when: ansible_distribution == 'Ubuntu'
 
-- name: Install unattended-upgrades
+- name: Install unattended-upgrades | Debian
   apt:
     name: unattended-upgrades
     state: present
   sudo: true
 
-- name: Install Update notifier
+- name: Install Update notifier | Debian
   apt:
     name: update-notifier
     state: present
   sudo: true
 
-- name: Copy unattended-upgrades configuration files in place.
+- name: Copy unattended-upgrades configuration files in place. | Debian
   template:
     src: "{{ item }}.j2"
     dest: /etc/apt/apt.conf.d/{{ item }}
