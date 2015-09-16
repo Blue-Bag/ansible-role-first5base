@@ -55,4 +55,4 @@ http://www.richud.com/wiki/Ubuntu_Enable_Automatic_Updates_Unattended_Upgrades
 setup VIM
 #https://gist.github.com/jackbravo/7163461
 #https://github.com/axai-mx/ansible-drupal-roles/blob/master/roles/common/tasks/main.yml
-#
+#http://superuser.com/questions/27091/vim-to-replace-vi
