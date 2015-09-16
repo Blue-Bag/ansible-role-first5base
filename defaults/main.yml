@@ -3,7 +3,7 @@
 # defaults for hostname
 hostname_fqdn: "{{ansible_fqdn}}"
 hostname_name: "{{hostname_fqdn.split('.').0}}"
-
+f5base_dohostname: true
 # defaults for Apt Periodic
 
 # Enable the update/upgrade script (0=disable)

@@ -11,6 +11,7 @@
   when: ansible_os_family == 'RedHat'
 
 - include: host.yml
+  when: f5base_dohostname
 
 - include: motd.yml
 
