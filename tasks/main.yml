@@ -14,6 +14,7 @@
   when: f5base_dohostname
 
 - include: motd.yml
+  when: f5base_domotd
 
 # Disable some services we don't need
 - name: Disable Unrequired services
