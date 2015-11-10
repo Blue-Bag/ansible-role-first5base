@@ -15,12 +15,14 @@ apt_periodic_update: "1"
 
 # Do "apt-get upgrade --download-only" every n-days (0=disable)
 apt_periodic_dload_packages: "1"
+apt_notify_email: 'root'
+apt_notify_onlyonerror: 'true'
 
 # Run the "unattended-upgrade" security upgrade script
 # every n-days (0=disabled)
 # Requires the package "unattended-upgrades" and will write
 # a log in /var/log/unattended-upgrades
-apt_periodic_unattended_upgrade: "1"
+apt_periodic_unattended_upgrade: "0"
 
 # Do "apt-get autoclean" every n-days (0=disable)
 apt_periodic_autoclean: "7"
