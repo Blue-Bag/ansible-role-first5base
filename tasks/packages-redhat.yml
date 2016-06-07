@@ -4,7 +4,7 @@
   yum:
     name: "{{ item }}"
     state: present
-  sudo: true
+  become: true
   with_items: f5base_packages_required
 
 - name: Ensure required packages are running and enabled at system start. | RedHat
@@ -13,7 +13,7 @@
     state: started
     enabled: yes
   with_items: f5base_packages_started
-  sudo: true
+  become: true
 
 - name: Install yum-cron.
   yum: pkg=yum-cron state=installed

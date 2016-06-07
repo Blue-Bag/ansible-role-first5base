@@ -6,7 +6,7 @@
 
 - name: Update motd
   template: src=motd.j2 dest=/etc/motd
-  sudo: true
+  become: true
   tags:
      - configuration
      - motd
