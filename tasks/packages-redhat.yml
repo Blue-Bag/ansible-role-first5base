@@ -5,14 +5,14 @@
     name: "{{ item }}"
     state: present
   become: true
-  with_items: f5base_packages_required
+  with_items: "{{f5base_packages_required}}"
 
 - name: Ensure required packages are running and enabled at system start. | RedHat
   service:
     name: "{{ item }}"
     state: started
     enabled: yes
-  with_items: f5base_packages_started
+  with_items: "{{f5base_packages_started}}"
   become: true
 
 - name: Install yum-cron.
