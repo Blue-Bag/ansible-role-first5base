@@ -2,7 +2,7 @@
 
 - name: Set hostname
   hostname: name={{ inventory_hostname_short }}
-  sudo: true
+  become: true
   tags:
     - configuration
     - hosts
@@ -13,7 +13,7 @@
               line='127.0.1.1\t{{ inventory_hostname }}  {{ inventory_hostname_short }}'
               state=present
               backup=yes"
-  sudo: true
+  become: true
   tags: [configuration,hosts]
 
 - name: Display all variables/facts known for a host
@@ -30,7 +30,7 @@
              state: present
              backrefs: true
              backup: yes
-  sudo: true
+  become: true
   tags: [configuration,hosts,orighost]
 
 # These may be set by the Providor - change only if you need to

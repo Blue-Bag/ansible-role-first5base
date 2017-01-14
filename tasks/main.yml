@@ -22,6 +22,7 @@
      name: "{{ item }}"
      state: stopped
      enabled: no
-  with_items: srv_to_stop
+  with_items: "{{srv_to_stop}}"
   when: inventory_hostname not in groups['local']
+  tags: [base,services]
   ignore_errors: yes

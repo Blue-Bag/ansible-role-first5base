@@ -33,16 +33,16 @@
   apt:
     name: "{{ item }}"
     state: present
-  sudo: true
-  with_items: f5base_packages_required
+  become: true
+  with_items: "{{f5base_packages_required}}"
 
 - name: Ensure required packages are running and enabled at system start. | Debian
   service:
     name: "{{ item }}"
     state: started
     enabled: yes
-  sudo: true
-  with_items: f5base_packages_started
+  become: true
+  with_items: "{{f5base_packages_started}}"
 
 # Remove landscape as it is not required on ansible controlled server
 # and we get a performance improvement
@@ -56,20 +56,20 @@
     - landscape-client
     - landscape-common
     - whoopsie
-  sudo: true
+  become: true
   when: ansible_distribution == 'Ubuntu'
 
 - name: Install unattended-upgrades | Debian
   apt:
     name: unattended-upgrades
     state: present
-  sudo: true
+  become: true
 
 - name: Install Update notifier | Debian
   apt:
     name: update-notifier
     state: present
-  sudo: true
+  become: true
 
 - name: Copy unattended-upgrades configuration files in place. | Debian
   template:
@@ -90,7 +90,7 @@
 
 #- name install apticron to enable notifications
 #  apt: name=apticron
-#  sudo: true
+#  become: true
 
 # - name: Install python-software-properties so the apt_repository module will work properly
 #  apt: name=python-software-properties

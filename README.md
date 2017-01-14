@@ -51,6 +51,8 @@ Refs
 ------------------
 
 http://www.richud.com/wiki/Ubuntu_Enable_Automatic_Updates_Unattended_Upgrades
+Also see:
+https://github.com/jnv/ansible-role-unattended-upgrades
 
 setup VIM
 #https://gist.github.com/jackbravo/7163461
