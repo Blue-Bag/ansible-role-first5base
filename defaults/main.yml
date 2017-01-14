@@ -1,4 +1,5 @@
 ---
+# defaults/main.yml
 
 # defaults for hostname
 hostname_fqdn: "{{ansible_fqdn}}"
