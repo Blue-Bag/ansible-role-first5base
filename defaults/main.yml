@@ -57,6 +57,7 @@ f5base_packages_required:
  - rsync
  - vim
  - patch
+ - dbus
 
 f5base_packages_started:
  - rsync
