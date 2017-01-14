@@ -2,8 +2,8 @@
 # defaults/main.yml
 
 # defaults for hostname
-hostname_fqdn: "{{ansible_fqdn}}"
-hostname_name: "{{hostname_fqdn.split('.').0}}"
+hostname_fqdn: "{{ ansible_fqdn }}"
+hostname_name: "{{ hostname_fqdn.split('.').0 }}"
 f5base_dohostname: true
 f5base_domotd: true
 # defaults for Apt Periodic

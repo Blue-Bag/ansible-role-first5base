@@ -1,47 +1,51 @@
 ---
 
 - name: Set hostname
-  hostname: name={{ inventory_hostname_short }}
+  hostname: 
+    name: "{{ inventory_hostname_short }}"
   become: true
-  tags:
-    - configuration
-    - hosts
+  tags: [configuration,hosts]
 
 - name: Update /etc/hosts local fqdn
-  lineinfile: "dest=/etc/hosts
-              regexp='^127\\.0\\.1\\.1'
-              line='127.0.1.1\t{{ inventory_hostname }}  {{ inventory_hostname_short }}'
-              state=present
-              backup=yes"
+  lineinfile: 
+    dest: /etc/hosts
+    regexp: '^127\\.0\\.1\\.1'
+    line: "127.0.1.1\t{{ inventory_hostname }}  {{ inventory_hostname_short }}"
+    state: present
+    backup: yes
   become: true
   tags: [configuration,hosts]
 
 - name: Display all variables/facts known for a host
-  debug: var=inventory_hostname_short
+  debug:
+    var: hostvars[inventory_hostname_short]
+    verbosity: 4
 
 - name: Display all variables/facts known for a host
-  debug: var=inventory_hostname
+  debug:
+    var: hostvars[inventory_hostname]
+    verbosity: 4
 
 - name: Replace existing hosts entry for FQDN
   lineinfile:
-             dest: /etc/hosts
-             regexp: "^{{ ansible_ssh_host }}(.*)"
-             line: "{{ ansible_ssh_host }}\t{{ inventory_hostname }} {{ inventory_hostname_short }}"
-             state: present
-             backrefs: true
-             backup: yes
+    dest: /etc/hosts
+    regexp: "^{{ ansible_ssh_host }}(.*)"
+    line: "{{ ansible_ssh_host }}\t{{ inventory_hostname }} {{ inventory_hostname_short }}"
+    state: present
+    backrefs: true
+    backup: yes
   become: true
   tags: [configuration,hosts,orighost]
 
 # These may be set by the Providor - change only if you need to
 - name: Update nameservers in the resolv.conf
   template:
-       src: "resolve.conf.j2"
-       dest: /etc/resolv.conf
-       backup: yes
-       owner: root
-       group: root
-       mode: 755
+    src: "resolve.conf.j2"
+    dest: /etc/resolv.conf
+    backup: yes
+    owner: root
+    group: root
+    mode: 755
   when: nameserver_update is defined and nameserver_update == True
 # when: inventory_hostname in groups['local']
 
