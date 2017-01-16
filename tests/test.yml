@@ -4,6 +4,7 @@
 
   vars:
     f5base_dohostname: no
+    f5base_packages_started: []
 
   roles:
     - role_under_test
