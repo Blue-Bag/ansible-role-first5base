@@ -3,9 +3,7 @@
   remote_user: root
 
   vars:
-    become: true
-    become_method: sudo
-    become_user: root
+    f5base_dohostname: no
 
   roles:
     - role_under_test

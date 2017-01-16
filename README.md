@@ -42,6 +42,12 @@ Including an example of how to use your role (for instance, with variables passe
       roles:
          - { role: f5-base , tags: ["base"] }
 
+Tests
+-----------------
+At present the setting of hostnames is failing in the docker based tests (see https://github.com/ansible/ansible/issues/19681)
+
+
+
 License
 -------
 
