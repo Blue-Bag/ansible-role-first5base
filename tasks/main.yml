@@ -4,16 +4,16 @@
 # Essentials
 # http://www.howtoforge.com/how-to-configure-automatic-updates-on-debian-wheezy
 
-- include: packages-debian.yml
+- import_tasks: packages-debian.yml
   when: ansible_os_family == 'Debian'
 
-- include: packages-redhat.yml
+- import_tasks: packages-redhat.yml
   when: ansible_os_family == 'RedHat'
 
-- include: host.yml
+- import_tasks: host.yml
   when: f5base_dohostname
 
-- include: motd.yml
+- import_tasks: motd.yml
   when: f5base_domotd
 
 # Disable some services we don't need
