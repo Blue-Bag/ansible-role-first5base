@@ -41,6 +41,18 @@
   become: true
   tags: [configuration,hosts,orighost]
 
+- name: Replace existing hosts entry for FQDN
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ ansible_ipv6 }}(.*)"
+    line: "{{ ansible_ipv6 }}\t{{ inventory_hostname }} {{ inventory_hostname_short }}"
+    state: present
+    backrefs: true
+    backup: yes
+  when: ansible_ipv6 is defined
+  become: true
+  tags: [configuration,hosts,orighost]
+
 # These may be set by the Providor - change only if you need to
 - name: Update nameservers in the resolv.conf
   template:
