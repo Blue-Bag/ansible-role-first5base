@@ -7,6 +7,12 @@ hostname_name: "{{ hostname_fqdn.split('.').0 }}"
 
 f5base_dohostname: true
 f5base_domotd: true
+
+f5base_dolocale: yes
+f5base_locales:
+  - "en_GB.UTF-8"
+  - "en_US.UTF-8"
+
 # defaults for Apt Periodic
 
 # Enable the update/upgrade script (0=disable)

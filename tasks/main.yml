@@ -13,6 +13,10 @@
 - import_tasks: host.yml
   when: f5base_dohostname
 
+- import_tasks: locale.yml
+  when: f5base_dolocale
+  tags: [base,locale]
+
 - import_tasks: motd.yml
   when: f5base_domotd
 
