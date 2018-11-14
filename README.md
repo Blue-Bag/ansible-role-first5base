@@ -64,3 +64,6 @@ setup VIM
 #https://gist.github.com/jackbravo/7163461
 #https://github.com/axai-mx/ansible-drupal-roles/blob/master/roles/common/tasks/main.yml
 #http://superuser.com/questions/27091/vim-to-replace-vi
+
+Locales:
+https://andreas.scherbaum.la/blog/archives/941-Configuring-locales-in-Debian-and-Ubuntu,-using-Ansible-Reloaded.html
