@@ -69,3 +69,11 @@ f5base_packages_required:
 
 f5base_packages_started:
  - rsync
+
+f5base_packages_remove:
+ - landscape-client
+ - landscape-common
+ - whoopsie
+
+
+
