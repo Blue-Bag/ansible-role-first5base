@@ -1,0 +1,3 @@
+// remount tmp as exec to allow preconfig
+DPkg::Pre-Install-Pkgs {"mount -o remount,exec /tmp";};
+DPkg::Post-Invoke {"mount -o remount /tmp";};
