@@ -71,10 +71,15 @@
   shell: "mount | grep 'on /tmp'"
   register: tmp_mount_options
   changed_when: False
+  ignore_errors: true
 
 - name: check is noexec is in stdout
   set_fact:
     tmp_is_noexec: "{{ True if (tmp_mount_options.stdout.find('noexec') != -1) else False}}"
+
+- name: debug
+  debug:
+    var: tmp_is_noexec
 
 - name: Copy unattended-upgrades configuration files in place. | Debian
   template:
@@ -87,7 +92,7 @@
     - { file: "10periodic", install: true }
     - { file: "50unattended-upgrades", install: true }
     - { file: "60remounttmp", install: tmp_is_noexec }
-  when: item.install
+  when: item.install == true
 
 # TODO check email address for update notifications
 # default seems OK on Debian
