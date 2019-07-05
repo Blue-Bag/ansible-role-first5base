@@ -11,18 +11,18 @@
   when: ansible_os_family == 'RedHat'
 
 - import_tasks: security.yml
-  when: f5base_dosecurity
+  when: f5base_dosecurity|bool
 
 
 - import_tasks: host.yml
-  when: f5base_dohostname
+  when: f5base_dohostname|bool
 
 - import_tasks: locale.yml
-  when: f5base_dolocale
+  when: f5base_dolocale|bool
   tags: [base,locale]
 
 - import_tasks: motd.yml
-  when: f5base_domotd
+  when: f5base_domotd|bool
 
 # Disable some services we don't need
 - name: Disable Unrequired services
