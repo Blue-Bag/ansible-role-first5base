@@ -57,14 +57,12 @@
 
 - name: Install unattended-upgrades | Debian
   apt:
-    name: unattended-upgrades
+    name: "{{ item }}"
     state: present
-  become: true
-
-- name: Install Update notifier | Debian
-  apt:
-    name: update-notifier
-    state: present
+  with:
+   - "unattended-upgrades"
+   - "apt-listchanges"
+   - "update-notifier"
   become: true
 
 - name: check if tmp is mounted as tmp_is_noexec
@@ -80,6 +78,7 @@
 - name: debug
   debug:
     var: tmp_is_noexec
+    verbosity: 2
 
 - name: Copy unattended-upgrades configuration files in place. | Debian
   template:
