@@ -84,14 +84,15 @@
 - name: Copy unattended-upgrades configuration files in place. | Debian
   template:
     src: "{{ item.file }}.j2"
-    dest: /etc/apt/apt.conf.d/{{ item.file }}
+    dest: /etc/apt/{{item.path}}{{ item.file }}
     owner: root
     group: root
     mode: 0644
   with_items:
-    - { file: "10periodic", install: true }
-    - { file: "50unattended-upgrades", install: true }
-    - { file: "60remounttmp", install: tmp_is_noexec }
+    - { file: "10periodic", install: true, path: "apt.conf.d/" }
+    - { file: "50unattended-upgrades", install: true, path: "apt.conf.d/" }
+    - { file: "60remounttmp", install: tmp_is_noexec, path: "apt.conf.d/" }
+    - { file: "listchanges.conf", install: true, path: "" }
   when: item.install == true
 
 # TODO check email address for update notifications
