@@ -57,12 +57,9 @@
 
 - name: Install unattended-upgrades | Debian
   apt:
-    name: "{{ item }}"
-    state: present
-  with:
-   - "unattended-upgrades"
-   - "apt-listchanges"
-   - "update-notifier"
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{f5base_unattended_up_packages}}"
   become: true
 
 - name: check if tmp is mounted as tmp_is_noexec
