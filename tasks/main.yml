@@ -10,6 +10,10 @@
 - import_tasks: packages-redhat.yml
   when: ansible_os_family == 'RedHat'
 
+- import_tasks: security.yml
+  when: f5base_dosecurity
+
+
 - import_tasks: host.yml
   when: f5base_dohostname
 

@@ -5,7 +5,10 @@
 hostname_fqdn: "{{ ansible_fqdn }}"
 hostname_name: "{{ hostname_fqdn.split('.').0 }}"
 
+default_umask: '027'
+
 f5base_dohostname: true
+f5base_dosecurity: true
 f5base_domotd: true
 
 f5base_dolocale: yes
@@ -75,5 +78,7 @@ f5base_packages_remove:
  - landscape-common
  - whoopsie
 
-
-
+f5base_umask_files:
+  - { path: '/etc/profile', element: 'umask'}
+  - { path: '/etc/login.defs', element: 'UMASK'}
+  - { path: '/etc/init.d/rc', element: 'umask' }

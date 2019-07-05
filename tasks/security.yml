@@ -1,0 +1,40 @@
+---
+
+##  Update default UMASK
+# f5base_umask_files:
+#   - { path: '/etc/profile', element: 'umask'}
+#   - { path: '/etc/login.defs', element: 'UMASK'}
+#   - { path: '/etc/init.d/rc', element: 'umask' }
+
+- name: Check files exist
+  stat:
+    path: "{{ item.name }}"
+  register: umask_files
+  with_items:
+    - { name: '/etc/profile', element: 'umask' }
+    - { name: '/etc/login.defs', element: 'UMASK'}
+    - { name: '/etc/init.d/rc', element: 'umask' }
+  become: true
+  tags: [configuration,security]
+
+- debug: >
+    msg="{{ item.0.path }} - {{ item.1.stat.exists }}"
+  with_together:
+    - "{{f5base_umask_files}}"
+    - "{{umask_files.results}}"
+  tags: [configuration,security]
+
+# https://groups.google.com/forum/#!topic/ansible-project/MO9Wl-MWNDE
+- name: Update default umask
+  lineinfile:
+    dest: "{{ item.0.path }}"
+    regexp: '(?i)^umask\s+\d+'
+    line: "{{ item.0.element }} {{ default_umask }}"
+    state: present
+    create: no
+  with_together:
+    - "{{f5base_umask_files}}"
+    - "{{umask_files.results}}"
+  when: item.1.stat.exists
+  become: true
+  tags: [configuration,security]
