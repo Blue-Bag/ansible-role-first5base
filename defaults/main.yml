@@ -90,3 +90,6 @@ f5base_umask_files:
   - { path: '/etc/profile', element: 'umask'}
   - { path: '/etc/login.defs', element: 'UMASK'}
   - { path: '/etc/init.d/rc', element: 'umask' }
+
+f5base_custom_hosts_entries: []
+f5base_hosts_group: 'servers'

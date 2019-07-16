@@ -25,6 +25,21 @@ Another approach is to clear the default list of services to disable in the grou
 
 srv_to_stop:
 
+Hosts Files
+--------------
+The role enables the writing of hosts entries for all servers in a groups f5base_hosts_group
+For this to work you need to have gatherd facts for all inventory, even in limiting the play.
+To do that add the follwoing block to run before the play that runs this role
+- hosts: servers
+  tasks:
+    - name: gather facts from servers
+      setup:
+      delegate_to: "{{item}}"
+      delegate_facts: True
+      loop: "{{ groups[f5base_hosts_group] }}"
+      when: item not in groups['local']
+  tags: ['always']
+
 Role Variables
 --------------
 

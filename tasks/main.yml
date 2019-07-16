@@ -16,6 +16,7 @@
 
 - import_tasks: host.yml
   when: f5base_dohostname|bool
+  tags: [configuration,hosts]
 
 - import_tasks: locale.yml
   when: f5base_dolocale|bool
