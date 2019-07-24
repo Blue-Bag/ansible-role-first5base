@@ -4,29 +4,28 @@
     {{ f5base_logrotate_period | default('daily') }}
 	missingok
 	notifempty
-    {%- if f5base_logrotate_delaycompress %}
+{% if f5base_logrotate_delaycompress %}
     delaycompress
-    {% endif -%}
+{% endif %}
     compress
-    {%- if f5base_logrotate_gpg %}
-    compress
+{%if f5base_logrotate_gpg %}
     compresscmd /usr/bin/gpg
     compressoptions --always-trust --encrypt --recipient {{ f5base_gpg_identity }}
     compressext .gpg
-    {% endif -%}
-    {%- if f5base_logrotate_datenames %}
+{% endif %}
+{% if f5base_logrotate_datenames %}
     dateext
     dateformat {{ f5base_logrotate_dateformat }}
-    {% endif -%}
+{% endif -%}
 	postrotate
 		invoke-rc.d rsyslog rotate > /dev/null
-    {%- if f5base_logrotate_postrotate_cmd %}
-      {%- if f5base_logrotate_postrotate_cmd_isfile -%}
-       {{ f5base_logrotate_postrotate_cmd_file_dest }}/{{ f5base_logrotate_postrotate_cmd }} {{ f5base_logrotate_postrotate_cmd_param }}
-      {%- else -%}
-       {{ f5base_logrotate_postrotate_cmd }} {{ f5base_logrotate_postrotate_cmd_param }}
-      {%- endif -%}
-    {% endif -%}
+{% if f5base_logrotate_postrotate_cmd %}
+{% if f5base_logrotate_postrotate_cmd_isfile %}
+    {{ f5base_logrotate_postrotate_cmd_file_dest }}/{{ f5base_logrotate_postrotate_cmd }} {{ f5base_logrotate_postrotate_cmd_param }}
+{% else %}
+    {{ f5base_logrotate_postrotate_cmd }} {{ f5base_logrotate_postrotate_cmd_param }}
+{% endif %}
+{% endif %}
 	endscript
 }
 
