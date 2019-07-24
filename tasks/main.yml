@@ -35,3 +35,7 @@
   when: inventory_hostname not in groups['local']
   tags: [base,services]
   ignore_errors: yes
+
+- import_tasks: gpg.yml
+  when: f5base_do_gpg|bool
+  tags: [base,gpg]
