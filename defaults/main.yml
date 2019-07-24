@@ -93,3 +93,42 @@ f5base_umask_files:
 
 f5base_custom_hosts_entries: []
 f5base_hosts_group: 'servers'
+
+###### Logrotate for rsyslog
+f5base_dologrotate: no
+f5base_logrotate_rotate_number: 7
+f5base_logrotate_period: 'daily'
+# if utting files off to s3 then don't delay compress
+f5base_logrotate_delaycompress: yes
+# if putting files off to S3 then uses date names
+f5base_logrotate_datenames: no
+f5base_logrotate_dateformat: '-%Y-%m-%d'
+# Note that the postrotate gets the log file name not the resulting rotated file name
+# https://serverfault.com/a/747066
+# If result log file is (logfilepath).(log)-(20160105) formated, Maybe you can try this:
+# postrotate
+# DATE=`date '+%Y%m%d'`
+# /path/to/script $1-$DATE
+# endscript
+# If you want (logfilepath)-(20160105).(log) format, youcan use:
+
+# postrotate
+# DATE=`date '+%Y%m%d'`
+# LOGF=${1%*.}
+# /path/to/script $LOGF-$DATE.log
+# endscript
+# with $1 return logfilepath
+# if a custom postrotate command then put the command or file name
+f5base_logrotate_postrotate_cmd: no
+# is the PR cmd a file and if it is put it up
+f5base_logrotate_postrotate_cmd_isfile: no
+# if it is a file then paths are here
+f5base_logrotate_postrotate_cmd_file_dest: '/usr/local/bin'
+f5base_logrotate_postrotate_cmd_file_src: '/path/to/srcfile'
+# any params passed to the command
+# can use %1 for the name of the rotated file
+f5base_logrotate_postrotate_cmd_param: no
+
+f5base_do_gpg: no
+f5base_gpg_public_key_path: '/path/to/public_key'
+f5base_gpg_identity: 'ansible@youremailaddress.com'

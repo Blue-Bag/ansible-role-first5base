@@ -1,0 +1,15 @@
+---
+
+- name: Put up a specific Postrotate file
+  template:
+     src: "{{ f5base_logrotate_postrotate_cmd_file_src }}"
+     dest: "{{ f5base_logrotate_postrotate_cmd_file_dest }}/{{ f5base_logrotate_postrotate_cmd}}"
+  when: f5base_logrotate_postrotate_cmd_isfile
+  become: true
+
+- name: Update Rsyslog
+  template:
+    src: logrotate-rsyslog.conf.j2
+    dest: /etc/logrotate.d/rsyslog
+    backup: yes
+  become: true

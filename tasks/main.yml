@@ -13,6 +13,9 @@
 - import_tasks: security.yml
   when: f5base_dosecurity|bool
 
+- import_tasks: logrotate.yml
+  when: f5base_dologrotate|bool
+  tags: [configuration,logrotate]
 
 - import_tasks: host.yml
   when: f5base_dohostname|bool
