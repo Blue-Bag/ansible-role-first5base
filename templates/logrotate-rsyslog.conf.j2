@@ -16,16 +16,25 @@
 {% if f5base_logrotate_datenames %}
     dateext
     dateformat {{ f5base_logrotate_dateformat }}
-{% endif -%}
+{% endif %}
     postrotate
       invoke-rc.d rsyslog rotate > /dev/null
-{% if f5base_logrotate_postrotate_cmd %}
-{% if f5base_logrotate_postrotate_cmd_isfile %}
-      {{ f5base_logrotate_postrotate_cmd_file_dest }}/{{ f5base_logrotate_postrotate_cmd }} {{ f5base_logrotate_postrotate_cmd_param }}
+{% for last_action in f5base_logrotate_lastactions if last_action.type = 'postrotate' %}
+{% if last_action.isfile %}
+      {{ last_action.file_dest }}/{{ last_action.cmd }} {{ last_action.cmd_param }}
 {% else %}
-      {{ f5base_logrotate_postrotate_cmd }} {{ f5base_logrotate_postrotate_cmd_param }}
+      {{ last_action.cmd }} {{ last_action.cmd_param }}
 {% endif %}
+{% endfor %}
+    endscript
+    lastaction
+{% for last_action in f5base_logrotate_lastactions if last_action.type = 'lastaction' %}
+{% if last_action.isfile %}
+      {{ last_action.file_dest }}/{{ last_action.cmd }} {{ last_action.cmd_param }}
+{% else %}
+      {{ last_action.cmd }} {{ last_action.cmd_param }}
 {% endif %}
+{% endfor %}
     endscript
 }
 

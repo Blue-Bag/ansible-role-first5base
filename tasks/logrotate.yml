@@ -2,9 +2,13 @@
 
 - name: Put up a specific Postrotate file
   template:
-     src: "{{ f5base_logrotate_postrotate_cmd_file_src }}"
-     dest: "{{ f5base_logrotate_postrotate_cmd_file_dest }}/{{ f5base_logrotate_postrotate_cmd}}"
-  when: f5base_logrotate_postrotate_cmd_isfile
+     src: "{{ item.file_src }}"
+     dest: "{{ item.file_dest }}/{{ item.cmd}}"
+     owner: root
+     group: root
+     mode: 0700
+  with_items: f5base_logrotate_actions
+  when: item.isfile | bool
   become: true
 
 - name: Update Rsyslog
