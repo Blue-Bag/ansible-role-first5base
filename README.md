@@ -211,14 +211,14 @@ You can specific a group in your inventory to add to the hosts file
    f5base_logrotate_datenames: no
    f5base_logrotate_dateformat: '-%Y-%m-%d'
 ```
-You can specify actions for the postrotate and/or last action script blocks
+You can specify actions for the prerotate, postrotate and/or lastaction script blocks
 The command can be a command or a file name.
 If it is a filename then specify the path.
 Also if it is a file the role will put the destination file up using a template specified in the source.
 ```
 f5base_logrotate_actions:
   - name: 'push to S3' - Arbritary
-    type: 'lastaction' - Action block for the action [postrotate | lastaction]
+    type: 'lastaction' - Action block for the action [prerotate | postrotate | lastaction]
     cmd: 's3put-logfiles.sh' - Command or file name to call
     isfile: yes - If a file then out the file up
     file_dest: '/usr/local/bin' - Destination path for the file
@@ -241,7 +241,9 @@ You can specify GPG for encryption
    f5base_gpg_public_key_path: '/path/to/public_key'
    f5base_gpg_identity: 'ansible@youremailaddress.com'
 ```
-
+#todo
+Generalise the encryption method
+Allow other methods
 
 ## Dependencies
 
@@ -259,6 +261,8 @@ Including an example of how to use your role (for instance, with variables passe
 
 ## Tests
 At present the setting of hostnames is failing in the docker based tests (see https://github.com/ansible/ansible/issues/19681)
+
+
 
 ## License
 

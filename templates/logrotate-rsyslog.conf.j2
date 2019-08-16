@@ -17,9 +17,18 @@
     dateext
     dateformat {{ f5base_logrotate_dateformat }}
 {% endif %}
+    prerotate
+{% for last_action in f5base_logrotate_actions if last_action.type == 'prerotate' %}
+{% if last_action.isfile %}
+      {{ last_action.file_dest }}/{{ last_action.cmd }} {{ last_action.cmd_param }}
+{% else %}
+      {{ last_action.cmd }} {{ last_action.cmd_param }}
+{% endif %}
+{% endfor %}
+    endscript
     postrotate
       invoke-rc.d rsyslog rotate > /dev/null
-{% for last_action in f5base_logrotate_lastactions if last_action.type = 'postrotate' %}
+{% for last_action in f5base_logrotate_actions if last_action.type == 'postrotate' %}
 {% if last_action.isfile %}
       {{ last_action.file_dest }}/{{ last_action.cmd }} {{ last_action.cmd_param }}
 {% else %}
@@ -28,7 +37,7 @@
 {% endfor %}
     endscript
     lastaction
-{% for last_action in f5base_logrotate_lastactions if last_action.type = 'lastaction' %}
+{% for last_action in f5base_logrotate_actions if last_action.type == 'lastaction' %}
 {% if last_action.isfile %}
       {{ last_action.file_dest }}/{{ last_action.cmd }} {{ last_action.cmd_param }}
 {% else %}
