@@ -1,5 +1,9 @@
 ---
 
+- debug:
+    var: f5base_logrotate_actions
+    verbosity: 3
+
 - name: Put up a specific Postrotate file
   template:
      src: "{{ item.file_src }}"
@@ -7,8 +11,10 @@
      owner: root
      group: root
      mode: 0700
-  with_items: f5base_logrotate_actions
-  when: item.isfile | bool
+  loop: "{{ f5base_logrotate_actions }}"
+  when: item.isfile is defined and (item.isfile | bool)
+  loop_control:
+    label: "{{ item.name }}"
   become: true
 
 - name: Update Rsyslog
