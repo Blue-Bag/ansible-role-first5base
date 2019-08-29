@@ -2,9 +2,10 @@
 # put up a publick key that we can use for encryption
 
 # Use armored file since utf-8 string is expected. Must be of "PGP PUBLIC KEY BLOCK" type.
+# todo - update to allow the addition of private and public keys and specify keyring
 - name: Add a key from a file on the Ansible server.
   apt_key:
-    keyring: '/root/.gnupg/secring.gpg'
+    keyring: '/root/.gnupg/pubring.gpg'
     data: "{{ lookup('file', f5base_gpg_public_key_path) }}"
     state: present
   when: f5base_do_gpg|bool
