@@ -1,4 +1,4 @@
-// {{ ansible_managed }}
+// {{ ansible_managed | comment }}
 // Enable the update/upgrade script (0=disable)
 APT::Periodic::Enable {{ apt_periodic_enable|default('"1"') }};
 
