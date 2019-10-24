@@ -44,7 +44,7 @@
       state: present
       insertbefore: '^# IPv6'
     become: yes
-    when: ansible_hostname != item and item not in groups['local']
+    when: ansible_hostname != item and item not in groups['local'] and hostvars[item]['ansible_facts']['default_ipv4']['address'] != ansible_ssh_host
     with_items: "{{ groups[f5base_hosts_group] }}"
   when: hostvars is defined
   tags: [configuration,hosts]
