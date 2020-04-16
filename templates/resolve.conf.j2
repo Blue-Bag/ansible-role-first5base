@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+# {{ ansible_managed | comment }}
 {% for ip in f5base_nameserver_ips %}
 nameserver {{ ip }}
 {% endfor %}

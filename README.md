@@ -58,8 +58,14 @@ Allows for the following:
 ` defaults/main.yml`
 
 #### Set the default for the UMASK
+A more secure umask of 027 could be set
+But this can have implications for things like
+pulling changes via git.
+if you go with a more restrictive umask then set a more lenient
+one in the .bashrc/.bash_profile for that user
+
 ```
-   default_umask: '027'
+   default_umask: '022'
 
    f5base_umask_files:
      - { path: '/etc/profile', element: 'umask'}
