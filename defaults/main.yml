@@ -41,8 +41,8 @@ apt_periodic_autoclean: "7"
 apt_automatic_reboot: false
 
 apt_origin_patterns:
-   - "origin=Debian,archive=stable,label=Debian-Security"
-   - "origin=Debian,archive=oldstable,label=Debian-Security"
+  - "origin=Debian,archive=stable,label=Debian-Security"
+  - "origin=Debian,archive=oldstable,label=Debian-Security"
 
 apt_allowed_origins:
   - "${distro_id}:${distro_codename}-security"
@@ -59,10 +59,10 @@ nameserver_update: false
 
 # These are set to OpenDNS / google
 f5base_nameserver_ips:
- - 208.67.220.220
- - 8.8.4.4
- - 208.67.222.222
- - 8.8.8.8
+  - 208.67.220.220
+  - 8.8.4.4
+  - 208.67.222.222
+  - 8.8.8.8
 
 f5base_packages_required:
   - rsync
@@ -77,22 +77,22 @@ f5base_packages_required:
 
 
 f5base_unattended_up_packages:
-  - { name: 'unattended-upgrades', state: 'present'}
-  - { name: 'apt-listchanges', state: 'present'}
-  - { name: 'update-notifier', state: 'present'}
+  - {name: 'unattended-upgrades', state: 'present'}
+  - {name: 'apt-listchanges', state: 'present'}
+  - {name: 'update-notifier', state: 'present'}
 
 f5base_packages_started:
- - rsync
+  - rsync
 
 f5base_packages_remove:
- - landscape-client
- - landscape-common
- - whoopsie
+  - landscape-client
+  - landscape-common
+  - whoopsie
 
 f5base_umask_files:
-  - { path: '/etc/profile', element: 'umask'}
-  - { path: '/etc/login.defs', element: 'UMASK'}
-  - { path: '/etc/init.d/rc', element: 'umask' }
+  - {path: '/etc/profile', element: 'umask'}
+  - {path: '/etc/login.defs', element: 'UMASK'}
+  - {path: '/etc/init.d/rc', element: 'umask'}
 
 f5base_custom_hosts_entries: []
 f5base_hosts_group: 'servers'
@@ -102,7 +102,7 @@ f5base_dologrotate: false
 f5base_logrotate_rotate_number: 7
 f5base_logrotate_period: 'daily'
 # if utting files off to s3 then don't delay compress
-f5base_logrotate_delaycompress: yes
+f5base_logrotate_delaycompress: true
 # if putting files off to S3 then uses date names
 f5base_logrotate_datenames: false
 f5base_logrotate_dateformat: '-%Y-%m-%d'

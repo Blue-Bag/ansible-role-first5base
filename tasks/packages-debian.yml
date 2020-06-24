@@ -51,7 +51,7 @@
   apt:
     name: "{{ f5base_packages_remove }}"
     state: absent
-    purge: yes
+    purge: true
   become: true
   when: ansible_distribution == 'Ubuntu'
 
@@ -96,9 +96,9 @@
 # - name: Make sure unattended-upgrades only installs from $ubuntu_release-security
 #   action: lineinfile dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="$ubuntu_release-updates" state=absent
 
-#- name install apticron to enable notifications
-#  apt: name=apticron
-#  become: true
+# - name install apticron to enable notifications
+#   apt: name=apticron
+#   become: true
 
 # - name: Install python-software-properties so the apt_repository module will work properly
-#  apt: name=python-software-properties
+#   apt: name=python-software-properties

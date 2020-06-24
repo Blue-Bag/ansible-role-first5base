@@ -25,27 +25,30 @@
 # see Readme
 
 - block:
-  - name: Display all variables/facts known for a host
-    debug:
-      msg: "{{ hostvars[item]['ansible_facts']['default_ipv4']['address'] }}\t{{ hostvars[item]['ansible_facts']['fqdn'] }} {{ hostvars[item]['ansible_hostname'] }}"
-      verbosity: 3
-    with_items: "{{ groups[f5base_hosts_group] }}"
-    when: ansible_hostname != item and item not in groups['local']
-    tags: [configuration,hosts]
+    - name: Display all variables/facts known for a host
+      debug:
+        msg: "{{ hostvars[item]['ansible_facts']['default_ipv4']['address'] }}\t{{ hostvars[item]['ansible_facts']['fqdn'] }} {{ hostvars[item]['ansible_hostname'] }}"
+        verbosity: 3
+      with_items: "{{ groups[f5base_hosts_group] }}"
+      when: ansible_hostname != item and item not in groups['local']
+      tags: [configuration, hosts]
 
-  - meta: end_play
-    when: ansible_verbosity > 2
+    - meta: end_play
+      when: ansible_verbosity > 2
 
-  - name: Add IP address of all hosts to all hosts
-    lineinfile:
-      dest: /etc/hosts
-      regexp: "^{{ hostvars[item]['ansible_facts']['default_ipv4']['address'] }}"
-      line: "{{ hostvars[item]['ansible_facts']['default_ipv4']['address'] }}\t{{ hostvars[item]['ansible_facts']['fqdn'] }} {{ hostvars[item]['ansible_hostname'] }}"
-      state: present
-      insertbefore: '^# IPv6'
-    become: yes
-    when: ansible_hostname != item and item not in groups['local'] and hostvars[item]['ansible_facts']['default_ipv4']['address'] != ansible_ssh_host
-    with_items: "{{ groups[f5base_hosts_group] }}"
+    - name: Add IP address of all hosts to all hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ hostvars[item]['ansible_facts']['default_ipv4']['address'] }}"
+        line: "{{ hostvars[item]['ansible_facts']['default_ipv4']['address'] }}\t{{ hostvars[item]['ansible_facts']['fqdn'] }} {{ hostvars[item]['ansible_hostname'] }}"
+        state: present
+        insertbefore: '^# IPv6'
+      become: true
+      when:
+        - ansible_hostname != item
+        - item not in groups['local']
+        - hostvars[item]['ansible_facts']['default_ipv4']['address'] != ansible_ssh_host
+      with_items: "{{ groups[f5base_hosts_group] }}"
   when: hostvars is defined
   tags: [configuration, hosts]
 
@@ -81,7 +84,7 @@
     backrefs: true
     backup: true
   become: true
-  tags: [configuration,hosts,orighost]
+  tags: [configuration, hosts, orighost]
 
 - name: Replace existing hosts entry for FQDN
   lineinfile:
@@ -89,11 +92,11 @@
     regexp: "^{{ ansible_ipv6 }}(.*)"
     line: "{{ ansible_ipv6 }}\t{{ inventory_hostname }} {{ inventory_hostname_short }}"
     state: present
-#    backrefs: true
-    backup: yes
+    # backrefs: true
+    backup: true
   when: ansible_ipv6 is defined
   become: true
-  tags: [configuration,hosts,orighost]
+  tags: [configuration, hosts, orighost]
 
 # These may be set by the Providor - change only if you need to
 - name: Update nameservers in the resolv.conf

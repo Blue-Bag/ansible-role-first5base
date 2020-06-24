@@ -1,9 +1,7 @@
 ---
 
-
 - name: Ensure a locale exists
   locale_gen:
     name: "{{ item }}"
     state: present
   with_items: "{{ f5base_locales }}"
-
