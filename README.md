@@ -1,6 +1,6 @@
 
 # First5 Base
-
+[![Build Status](https://travis-ci.org/Blue-Bag/ansible-role-first5base.svg?branch=master)](https://travis-ci.org/Blue-Bag/ansible-role-first5base)
 This is the base role of the First5 set and covers the following tasks:
 
  1. Update the package Manager Repository (apt)
