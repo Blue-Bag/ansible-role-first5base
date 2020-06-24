@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  remote_user: root
+  become: true
+
+  vars:
+    # Added to prevent test failures in CI.
+    f5base_dohostname: false
+    f5base_packages_started: []
+    f5base_unattended_up_packages: []
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=true cache_valid_time=1200
+      when: ansible_os_family == 'Debian'
+      changed_when: false
+
+  roles:
+    - role: ansible-role-first5base

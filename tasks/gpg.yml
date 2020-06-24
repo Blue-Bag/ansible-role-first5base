@@ -6,10 +6,15 @@
 # we could use gpg --list-keys -v to see what file is currently used
 # sometime .gpg and sometimes .kbx
 
+- name: Prepare the keyring in case it hasn't been created yet.
+  command: 'gpg --list-keys'
+  when: f5base_do_gpg|bool
+  become: true
+
 - name: Add a key from a file on the Ansible server.
   apt_key:
     keyring: '/root/.gnupg/pubring.kbx'
     data: "{{ lookup('file', f5base_gpg_public_key_path) }}"
     state: present
   when: f5base_do_gpg|bool
-  become: yes
+  become: true

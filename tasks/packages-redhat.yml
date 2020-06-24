@@ -2,7 +2,7 @@
 
 - name: Install packages | Required packages that may not be installed | RedHat
   yum:
-    name: "{{f5base_packages_required}}"
+    name: "{{ f5base_packages_required }}"
     state: present
   become: true
 
@@ -10,12 +10,17 @@
   service:
     name: "{{ item }}"
     state: started
-    enabled: yes
-  with_items: "{{f5base_packages_started}}"
+    enabled: true
+  with_items: "{{ f5base_packages_started }}"
   become: true
 
 - name: Install yum-cron.
-  yum: pkg=yum-cron state=present
+  yum:
+    pkg: yum-cron
+    state: present
 
 - name: Ensure yum-cron is running and enabled on boot.
-  service: name=yum-cron state=started enabled=yes
+  service:
+    name: yum-cron
+    state: started
+    enabled: true

@@ -15,15 +15,15 @@
 
 - import_tasks: logrotate.yml
   when: f5base_dologrotate|bool
-  tags: [configuration,logrotate]
+  tags: [configuration, logrotate]
 
 - import_tasks: host.yml
   when: f5base_dohostname|bool
-  tags: [configuration,hosts]
+  tags: [configuration, hosts]
 
 - import_tasks: locale.yml
   when: f5base_dolocale|bool
-  tags: [base,locale]
+  tags: [base, locale]
 
 - import_tasks: motd.yml
   when: f5base_domotd|bool
@@ -33,12 +33,12 @@
   service:
      name: "{{ item }}"
      state: stopped
-     enabled: no
-  with_items: "{{srv_to_stop}}"
+     enabled: false
+  with_items: "{{ srv_to_stop }}"
   when: inventory_hostname not in groups['local']
-  tags: [base,services]
-  ignore_errors: yes
+  tags: [base, services]
+  ignore_errors: true
 
 - import_tasks: gpg.yml
-  when: f5base_do_gpg|bool
-  tags: [base,gpg]
+  when: f5base_do_gpg | bool
+  tags: [base, gpg]
