@@ -11,7 +11,7 @@ f5base_dohostname: true
 f5base_dosecurity: true
 f5base_domotd: true
 
-f5base_dolocale: yes
+f5base_dolocale: true
 f5base_locales:
   - "en_GB.UTF-8"
   - "en_US.UTF-8"
@@ -27,7 +27,7 @@ apt_periodic_update: "1"
 # Do "apt-get upgrade --download-only" every n-days (0=disable)
 apt_periodic_dload_packages: "1"
 apt_notify_email: 'root'
-apt_notify_onlyonerror: 'true'
+apt_notify_onlyonerror: true
 
 # Run the "unattended-upgrade" security upgrade script
 # every n-days (0=disabled)
@@ -38,7 +38,7 @@ apt_periodic_unattended_upgrade: "0"
 # Do "apt-get autoclean" every n-days (0=disable)
 apt_periodic_autoclean: "7"
 
-apt_automatic_reboot: 'False'
+apt_automatic_reboot: false
 
 apt_origin_patterns:
    - "origin=Debian,archive=stable,label=Debian-Security"
@@ -55,7 +55,7 @@ srv_to_stop:
   - rpcbind
 
 # Name Server Update
-nameserver_update: False
+nameserver_update: false
 
 # These are set to OpenDNS / google
 f5base_nameserver_ips:
@@ -65,13 +65,16 @@ f5base_nameserver_ips:
  - 8.8.8.8
 
 f5base_packages_required:
- - rsync
- - vim
- - patch
- - dbus
- - debsums
- - needrestart
- - locales
+  - rsync
+  - vim
+  - patch
+  - dbus
+  - debsums
+  - needrestart
+  - locales
+  - software-properties-common
+  - htop
+
 
 f5base_unattended_up_packages:
   - { name: 'unattended-upgrades', state: 'present'}
@@ -95,19 +98,21 @@ f5base_custom_hosts_entries: []
 f5base_hosts_group: 'servers'
 
 ###### Logrotate for rsyslog
-f5base_dologrotate: no
+f5base_dologrotate: false
 f5base_logrotate_rotate_number: 7
 f5base_logrotate_period: 'daily'
 # if utting files off to s3 then don't delay compress
 f5base_logrotate_delaycompress: yes
 # if putting files off to S3 then uses date names
-f5base_logrotate_datenames: no
+f5base_logrotate_datenames: false
 f5base_logrotate_dateformat: '-%Y-%m-%d'
 
 
-f5base_do_gpg: no
+f5base_do_gpg: false
 f5base_gpg_public_key_path: '/path/to/public_key'
 f5base_gpg_identity: 'ansible@youremailaddress.com'
+# add the encryption to the rsylog rotation
+f5base_logrotate_gpg: false
 
 ## actions for postrotate or lastaction
 f5base_logrotate_actions: []

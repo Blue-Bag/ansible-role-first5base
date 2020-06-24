@@ -68,9 +68,9 @@ one in the .bashrc/.bash_profile for that user
    default_umask: '022'
 
    f5base_umask_files:
-     - { path: '/etc/profile', element: 'umask'}
-     - { path: '/etc/login.defs', element: 'UMASK'}
-     - { path: '/etc/init.d/rc', element: 'umask' }
+     - {path: '/etc/profile', element: 'umask'}
+     - {path: '/etc/login.defs', element: 'UMASK'}
+     - {path: '/etc/init.d/rc', element: 'umask' }
 ```
 
 #### Optional tasks
@@ -90,7 +90,7 @@ one in the .bashrc/.bash_profile for that user
 ```
 ##### Update locales
 ```
-  f5base_dolocale: yes
+  f5base_dolocale: true
 
   f5base_locales:
     - "en_GB.UTF-8"
@@ -128,9 +128,9 @@ one in the .bashrc/.bash_profile for that user
 #### Unattended upgrade packages to install
 ```
    f5base_unattended_up_packages:
-     - { name: 'unattended-upgrades', state: 'present'}
-     - { name: 'apt-listchanges', state: 'present'}
-     - { name: 'update-notifier', state: 'present'}
+     - {name: 'unattended-upgrades', state: 'present'}
+     - {name: 'apt-listchanges', state: 'present'}
+     - {name: 'update-notifier', state: 'present'}
 ```
 #### Packages to start
 ```
@@ -161,7 +161,7 @@ one in the .bashrc/.bash_profile for that user
 ```
    apt_periodic_dload_packages: "1"
    apt_notify_email: 'root'
-   apt_notify_onlyonerror: 'true'
+   apt_notify_onlyonerror: true
 ```
 
 #### Run the "unattended-upgrade" security upgrade script every n-days (0=disabled)
@@ -175,7 +175,7 @@ apt_periodic_autoclean: "7"
 ```
 #### Automatically reboot if required?
 ```
-   apt_automatic_reboot: 'False'
+   apt_automatic_reboot: false
 ```
 #### What packages to check
 ```
@@ -204,17 +204,17 @@ You can specific a group in your inventory to add to the hosts file
 
 ### Logrotate for rsyslog
 ```
-   f5base_dologrotate: no
+   f5base_dologrotate: false
    f5base_logrotate_rotate_number: 7
    f5base_logrotate_period: 'daily'
 ```
 #### if putting files off to s3 then don't delay compress
 ```
-   f5base_logrotate_delaycompress: yes
+   f5base_logrotate_delaycompress: true
 ```
 #### if putting files off to S3 then uses date names
 ```
-   f5base_logrotate_datenames: no
+   f5base_logrotate_datenames: false
    f5base_logrotate_dateformat: '-%Y-%m-%d'
 ```
 You can specify actions for the prerotate, postrotate and/or lastaction script blocks
@@ -243,10 +243,12 @@ If not then the script gets called once for each rotated log
 By default compression will be gzip.
 You can specify GPG for encryption
 ```
-   f5base_do_gpg: yes (default no)
+   f5base_do_gpg: true (default false)
    f5base_gpg_public_key_path: '/path/to/public_key'
    f5base_gpg_identity: 'ansible@youremailaddress.com'
+   f5base_logrotate_gpg: true
 ```
+
 #todo
 Generalise the encryption method
 Allow other methods

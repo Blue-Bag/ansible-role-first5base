@@ -34,11 +34,11 @@
      name: "{{ item }}"
      state: stopped
      enabled: no
-  with_items: "{{srv_to_stop}}"
+  with_items: "{{ srv_to_stop }}"
   when: inventory_hostname not in groups['local']
-  tags: [base,services]
-  ignore_errors: yes
+  tags: [base, services]
+  ignore_errors: true
 
 - import_tasks: gpg.yml
-  when: f5base_do_gpg|bool
-  tags: [base,gpg]
+  when: f5base_do_gpg | bool
+  tags: [base, gpg]
