@@ -17,8 +17,8 @@
   become: true
   tags: [configuration, security]
 
-- debug: >
-    msg="{{ item.0.path }} - {{ item.1.stat.exists }}"
+- debug:
+    msg: "{{ item.0.path }} - {{ item.1.stat.exists }}"
   with_together:
     - "{{ f5base_umask_files }}"
     - "{{ umask_files.results }}"
