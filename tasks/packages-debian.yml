@@ -72,7 +72,7 @@
   set_fact:
     tmp_is_noexec: "{{ true if (tmp_mount_options.stdout.find('noexec') != -1) else false }}"
   when:
-    -  tmp_mount_options.stdout is defined
+    - tmp_mount_options.stdout is defined
 
 - name: debug
   debug:
