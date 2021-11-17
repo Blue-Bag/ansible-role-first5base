@@ -31,7 +31,7 @@
 
 - name: Install packages | Required packages that may not be installed | Debian
   apt:
-    name: "{{ f5base_packages_required }}"
+    name: "{{f5base_packages_required}}"
     state: present
   become: true
 
@@ -40,9 +40,9 @@
   service:
     name: "{{ item }}"
     state: started
-    enabled: true
+    enabled: yes
   become: true
-  with_items: "{{ f5base_packages_started }}"
+  with_items: "{{f5base_packages_started}}"
 
 # Remove landscape as it is not required on ansible controlled server
 # and we get a performance improvement
@@ -51,7 +51,7 @@
   apt:
     name: "{{ f5base_packages_remove }}"
     state: absent
-    purge: true
+    purge: yes
   become: true
   when: ansible_distribution == 'Ubuntu'
 
@@ -59,20 +59,18 @@
   apt:
     name: "{{ item.name }}"
     state: "{{ item.state }}"
-  with_items: "{{ f5base_unattended_up_packages }}"
+  with_items: "{{f5base_unattended_up_packages}}"
   become: true
 
 - name: check if tmp is mounted as tmp_is_noexec
   shell: "mount | grep 'on /tmp'"
   register: tmp_mount_options
-  changed_when: false
+  changed_when: False
   ignore_errors: true
 
 - name: check is noexec is in stdout
   set_fact:
-    tmp_is_noexec: "{{ true if (tmp_mount_options.stdout.find('noexec') != -1) else false }}"
-  when:
-    - tmp_mount_options.stdout is defined
+    tmp_is_noexec: "{{ True if (tmp_mount_options.stdout.find('noexec') != -1) else False}}"
 
 - name: debug
   debug:
@@ -82,25 +80,25 @@
 - name: Copy unattended-upgrades configuration files in place. | Debian
   template:
     src: "{{ item.file }}.j2"
-    dest: /etc/apt/{{ item.path }}{{ item.file }}
+    dest: /etc/apt/{{item.path}}{{ item.file }}
     owner: root
     group: root
     mode: 0644
   with_items:
-    - {file: "10periodic", install: true, path: "apt.conf.d/"}
-    - {file: "50unattended-upgrades", install: true, path: "apt.conf.d/"}
-    - {file: "60remounttmp", install: tmp_is_noexec, path: "apt.conf.d/"}
-    - {file: "listchanges.conf", install: true, path: ""}
-  when: item.install | bool
+    - { file: "10periodic", install: true, path: "apt.conf.d/" }
+    - { file: "50unattended-upgrades", install: true, path: "apt.conf.d/" }
+    - { file: "60remounttmp", install: tmp_is_noexec, path: "apt.conf.d/" }
+    - { file: "listchanges.conf", install: true, path: "" }
+  when: item.install == true
 
 # TODO check email address for update notifications
 # default seems OK on Debian
 # - name: Make sure unattended-upgrades only installs from $ubuntu_release-security
 #   action: lineinfile dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="$ubuntu_release-updates" state=absent
 
-# - name install apticron to enable notifications
-#   apt: name=apticron
-#   become: true
+#- name install apticron to enable notifications
+#  apt: name=apticron
+#  become: true
 
 # - name: Install python-software-properties so the apt_repository module will work properly
-#   apt: name=python-software-properties
+#  apt: name=python-software-properties
