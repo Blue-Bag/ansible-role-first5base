@@ -6,6 +6,26 @@ hostname_fqdn: "{{ ansible_fqdn }}"
 hostname_name: "{{ hostname_fqdn.split('.').0 }}"
 
 default_umask: '022'
+default_adduser_dirperms: '0750'
+default_logindefs_crypt_rounds: '640000'
+
+net_modules_blocklist:
+  - atm
+  - dccp
+  - sctp
+  - rds
+  - tipc
+
+net_modules_allowlist: []
+
+
+# Set to false to disable chmod /home folders to 700
+os_chmod_home_folders: true
+# Specify user home folders in /home that shouldn't be chmodded to 700
+os_ignore_home_folder_users: ['lost+found']
+
+os_protect_directories:
+   - {path: '/etc/sudoers.d', mode: '0750'}
 
 f5base_dohostname: true
 f5base_dosecurity: true
@@ -56,6 +76,8 @@ srv_to_stop:
 
 # Name Server Update
 nameserver_update: false
+
+resolve_template: "resolve.conf.j2"
 
 # These are set to OpenDNS / google
 f5base_nameserver_ips:
