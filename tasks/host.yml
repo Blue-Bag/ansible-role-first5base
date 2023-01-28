@@ -101,7 +101,7 @@
 # These may be set by the Providor - change only if you need to
 - name: Update nameservers in the resolv.conf
   template:
-    src: "resolve.conf.j2"
+    src: "{{ resolve_template }}"
     dest: /etc/resolv.conf
     backup: true
     owner: root
