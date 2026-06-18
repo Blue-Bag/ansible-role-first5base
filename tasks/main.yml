@@ -17,6 +17,14 @@
   when: f5base_dologrotate|bool
   tags: [configuration, logrotate]
 
+- import_tasks: journald.yml
+  when: f5base_dojournald|bool
+  tags: [configuration,journald]
+  
+- import_tasks: sysstat.yml
+  when: f5base_dosysstat|bool
+  tags: [configuration,sysstat]
+
 - import_tasks: host.yml
   when: f5base_dohostname|bool
   tags: [configuration, hosts]

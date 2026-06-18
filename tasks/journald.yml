@@ -1,0 +1,24 @@
+---
+
+# create conf directory
+- name: Ensure journald conf directory exists.
+  become: true
+  file:
+    path: "{{ f5base_journald.confdir }}"
+    owner: "root"
+    group: "root"
+    state: directory
+    mode: 0755
+
+# add size file
+- name: Create custom config file
+  template:
+    src: 'journald.conf.j2'
+    dest: "{{ f5base_journald.confdir }}/{{ f5base_journald.confname }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  become: 'yes'
+  notify:
+     - Restart Journald
+

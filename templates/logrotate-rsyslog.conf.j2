@@ -27,7 +27,7 @@
 {% endfor %}
     endscript
     postrotate
-      invoke-rc.d rsyslog rotate > /dev/null
+      /usr/lib/rsyslog/rsyslog-rotate
 {% for last_action in f5base_logrotate_actions if last_action.type == 'postrotate' %}
 {% if last_action.isfile %}
       {{ last_action.file_dest }}/{{ last_action.cmd }} {{ last_action.cmd_param }}
@@ -68,6 +68,6 @@
 	delaycompress
 	sharedscripts
 	postrotate
-		invoke-rc.d rsyslog rotate > /dev/null
+		/usr/lib/rsyslog/rsyslog-rotate
 	endscript
 }

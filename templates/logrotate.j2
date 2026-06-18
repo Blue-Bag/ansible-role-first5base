@@ -1,0 +1,57 @@
+{% set logrotate_target = item -%}
+
+{{ logrotate_target.target }}
+{
+    rotate {{ logrotate_target.rotate_number | default(7) }}
+    {{ logrotate_target.rotate_period | default('daily') }}
+    missingok
+    notifempty
+{% if logrotate_target.minsize %}
+    minsize {{logrotate_target.minsize | default('1M') }}
+{% endif %}
+{% if logrotate_target.create is defined %}
+   create {{ logrotate_target.create.mode | default('640')}} {{ logrotate_target.create.user | default('root') }} {{ logrotate_target.create.group | default('adm') }}
+{% endif %}
+{% if logrotate_target.delaycompress %}
+    delaycompress
+{% endif %}
+    compress
+{% if logrotate_target.gpg %}
+    compresscmd /usr/bin/gpg
+    compressoptions --always-trust --encrypt --recipient {{ f5base_gpg_identity }}
+    compressext .gpg
+{% endif %}
+{% if logrotate_target.datenames %}
+    dateext
+    dateformat {{ logrotate_target.dateformat | default( f5base_logrotate_dateformat) }}
+{% endif %}
+{% if logrotate_target.actions is defined %}
+{% for preaction in logrotate_target.actions if preaction.type == 'prerotate' %}
+{% if loop.first %}
+    prerotate
+{% endif %}
+      {{ preaction.cmd }}
+{% if loop.last %}
+    endscript
+{% endif %}      
+{% endfor %}
+{% for postaction in logrotate_target.actions if postaction.type == 'postrotate' %}
+{% if loop.first %}
+    postrotate
+{% endif %}
+      {{ postaction.cmd }}
+{% if loop.last %}
+    endscript
+{% endif %}      
+{% endfor %}  
+{% for lastaction in logrotate_target.actions if lastaction.type == 'lastaction' %}
+{% if loop.first %}
+    lastaction
+{% endif %}
+      {{ lastaction.cmd }}
+{% if loop.last %}
+    endscript
+{% endif %}
+{% endfor %}
+{% endif %}
+}

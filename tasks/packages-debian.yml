@@ -20,6 +20,22 @@
 #
 ###################################################################
 
+- name: Pretask | Debian | disable languages
+  ansible.builtin.template: 
+    src: '99force-ipv4.j2'
+    dest: "/etc/apt/apt.conf.d/99force-ipv4"   
+    owner: root
+    group: root
+    mode: 0644   
+  when: apt_force_ipv4  
+
+- name: Pretask | Debian | disable languages
+  ansible.builtin.template: 
+    src: '99disable-translations.j2'
+    dest: "/etc/apt/apt.conf.d/99disable-translations"   
+    owner: root
+    group: root
+    mode: 0644 
 
 - name: Pretask | Update apt cache | Debian
   apt: update_cache=yes cache_valid_time=3600

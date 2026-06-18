@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+[Journal]
+{% for k,v in f5base_journald.config.items() %}
+{{ k }}={{ v }}
+{% endfor %}
