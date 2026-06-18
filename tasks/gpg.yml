@@ -12,9 +12,9 @@
   become: true
 
 - name: Add a key from a file on the Ansible server.
-  apt_key:
-    keyring: '/root/.gnupg/pubring.kbx'
-    data: "{{ lookup('file', f5base_gpg_public_key_path) }}"
-    state: present
+  ansible.builtin.command:
+    cmd: "gpg --batch --import {{ f5base_gpg_public_key_path }}"
+  register: _gpg_import
+  changed_when: "'not changed' not in _gpg_import.stderr"
   when: f5base_do_gpg|bool
   become: true
