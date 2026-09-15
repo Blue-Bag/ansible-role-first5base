@@ -232,6 +232,29 @@ f5base_logrotate_actions:
     cmd_param: '"$1 {{ ansible_fqdn }}/logs"' - params to pass to the command / file
 ```
 
+You can define targets for logrotation
+```
+f5base_logrotate_targets:
+  - name: "target_name"
+    target: "/var/logs/mylog.log"
+    dest: "name of the logrotate script"
+    rotate_number: 12
+    minsize: 1M
+    create:
+      mode: 640
+      user: 'root'
+      group: 'adm'
+    rotate_period: "monthly"
+    delaycompress: False
+    gpg: False
+    datenames: False
+    actions:
+      - name: restart
+        type: prerotate
+        cmd: 'invoke-rc.d myservice reload > /dev/null'
+```
+
+
 **note:** can use %1 for the name of the rotated file
 
 If 'shared scripts' is set then the fullset of names gets passed and the script gets called once

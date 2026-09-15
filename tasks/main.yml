@@ -5,10 +5,10 @@
 # http://www.howtoforge.com/how-to-configure-automatic-updates-on-debian-wheezy
 
 - import_tasks: packages-debian.yml
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - import_tasks: packages-redhat.yml
-  when: ansible_os_family == 'RedHat'
+  when: ansible_facts['os_family'] == 'RedHat'
 
 - import_tasks: security.yml
   when: f5base_dosecurity|bool
@@ -16,6 +16,14 @@
 - import_tasks: logrotate.yml
   when: f5base_dologrotate|bool
   tags: [configuration, logrotate]
+
+- import_tasks: journald.yml
+  when: f5base_dojournald|bool
+  tags: [configuration,journald]
+  
+- import_tasks: sysstat.yml
+  when: f5base_dosysstat|bool
+  tags: [configuration,sysstat]
 
 - import_tasks: host.yml
   when: f5base_dohostname|bool

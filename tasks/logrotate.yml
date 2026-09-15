@@ -23,3 +23,13 @@
     dest: /etc/logrotate.d/rsyslog
     backup: true
   become: true
+
+- name: Misc Logrotate files
+  template: 
+    src: logrotate.j2
+    dest: /etc/logrotate.d/{{ item.name | replace (' ', '_')  }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ f5base_logrotate_targets }}"
+  become: true    

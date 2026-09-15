@@ -26,7 +26,7 @@
 
 # https://groups.google.com/forum/#!topic/ansible-project/MO9Wl-MWNDE
 - name: Update default umask
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ item.0.path }}"
     regexp: '(?i)^umask\s+\d+'
     line: "{{ item.0.element }} {{ default_umask }}"
@@ -38,3 +38,81 @@
   when: item.1.stat.exists
   become: true
   tags: [configuration, security]
+
+- name: Update default adduser dir perms
+  ansible.builtin.lineinfile:
+    dest: "/etc/adduser.conf"
+    regexp: '(?i)^DIR_MODE=+\d+'
+    line: "DIR_MODE={{ default_adduser_dirperms }}"
+    state: present
+    create: false
+  become: true
+  tags: [configuration,security,adduser]
+
+- name: Define the number of maximum SHA rounds
+
+  ansible.builtin.lineinfile:
+    dest: "/etc/login.defs"
+    regexp: "(?i)^#\\s+{{ item }}\\s+\\d+"
+    line: "{{ item }} {{ default_logindefs_crypt_rounds }}"
+    state: present
+    create: false
+  with_items:
+     - 'SHA_CRYPT_MIN_ROUNDS'
+     - 'SHA_CRYPT_MAX_ROUNDS'
+  become: true
+  tags: [configuration,security,cryptrounds]
+
+- block:
+    - name: get all home directories in /home, but skip ignored users
+      find:
+        paths: /home/
+        recurse: false
+        file_type: directory
+        excludes: "{{ os_ignore_home_folder_users | join(',') }}"
+      register: home_directories
+      when: os_chmod_home_folders | bool
+
+    - name: set ownership of /home directories to 0700
+      file:
+        mode: 0700
+        path: "{{ item.path }}"
+        state: directory
+      loop: "{{ home_directories.files }}"
+      when: os_chmod_home_folders | bool
+        
+
+    - name: Limit access to certain directories
+      file:
+        mode: "{{ item.mode}}"
+        path: "{{ item.path }}"
+        state: directory
+      loop: "{{ os_protect_directories }}"
+
+  become: true
+  tags: [configuration,security,sec_dirs]
+
+# # consider templating this
+# - name: disable kernel network modules
+#   become: 'yes'
+#   ansible.builtin.lineinfile:
+#     dest: /etc/modprobe.d/disablenet.conf
+#     line: "install {{ item }} /bin/true"
+#     mode: 0644
+#     owner: root
+#     group: root
+#     state: present
+#     create: 'yes'
+#   with_items:
+#     - "{{ net_modules_blocklist }}"
+#   tags: [configuration,security,modprobe]
+
+- name: Disable kernel network modules
+  template:
+    src: 'disablenet.conf.j2'
+    dest: '/etc/modprobe.d/disablenet.conf'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  become: 'yes'
+  tags: [configuration,security,modprobe]

@@ -6,6 +6,26 @@ hostname_fqdn: "{{ ansible_fqdn }}"
 hostname_name: "{{ hostname_fqdn.split('.').0 }}"
 
 default_umask: '022'
+default_adduser_dirperms: '0750'
+default_logindefs_crypt_rounds: '640000'
+
+net_modules_blocklist:
+  - atm
+  - dccp
+  - sctp
+  - rds
+  - tipc
+
+net_modules_allowlist: []
+
+
+# Set to false to disable chmod /home folders to 700
+os_chmod_home_folders: true
+# Specify user home folders in /home that shouldn't be chmodded to 700
+os_ignore_home_folder_users: ['lost+found']
+
+os_protect_directories:
+   - {path: '/etc/sudoers.d', mode: '0750'}
 
 f5base_dohostname: true
 f5base_dosecurity: true
@@ -51,11 +71,20 @@ apt_allowed_origins:
 #  - "${distro_id}:${distro_codename}-proposed"
 #  - "${distro_id}:${distro_codename}-backports"
 
+# could set to en
+# but not none - see https://carandraug.net/posts/2013/2013-01-08-right-way-to-not-download-apt-translation.html
+# Acquire::Languages { "environment"; "de"; "en"; "none"; "fr"; };
+apt_languages: "{ \"environment\"; \"en\"; }"
+
+apt_force_ipv4: False
+
 srv_to_stop:
   - rpcbind
 
 # Name Server Update
 nameserver_update: false
+
+resolve_template: "resolve.conf.j2"
 
 # These are set to OpenDNS / google
 f5base_nameserver_ips:
@@ -116,3 +145,33 @@ f5base_logrotate_gpg: false
 
 ## actions for postrotate or lastaction
 f5base_logrotate_actions: []
+
+## Other logrotate targets
+f5base_logrotate_targets: []
+# f5base_logrotate_targets:
+#   name: "acme-sh"
+#   target: "/root/.acme.sh/acme.sh.log"
+#   rotate_number: 12
+#   rotate_period: monthly
+#   delaycompress: false
+#   gpg: False
+#   datenames: False
+#   dateformat: {{ f5base_logrotate_dateformat }}
+
+f5base_dojournald: false
+f5base_journald:
+   confdir: "/etc/systemd/journald.conf.d"
+   confname: "journald.conf"
+   config:
+      SystemMaxUse: "1G"
+      SystemKeepFree: "10G"
+      SystemMaxFileSize: "25MB"
+      SystemMaxFiles: "100"
+      RuntimeMaxUse: "1G"
+
+f5base_dosysstat: false
+f5base_systat_enable_logging: true
+f5base_sysstat:
+   packages:
+     - sysstat
+   service: sysstat
