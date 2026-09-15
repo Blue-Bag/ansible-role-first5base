@@ -1,0 +1,5 @@
+---
+f5base_packages_distro:
+  - software-properties-common
+f5base_unattended_up_packages_distro:
+  - {name: 'update-notifier', state: 'present'}

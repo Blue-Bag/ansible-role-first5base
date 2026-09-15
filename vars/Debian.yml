@@ -1,0 +1,4 @@
+---
+# OS-family fallbacks. Overridden by Debian-<major>.yml or Ubuntu.yml when present.
+f5base_packages_distro: []
+f5base_unattended_up_packages_distro: []

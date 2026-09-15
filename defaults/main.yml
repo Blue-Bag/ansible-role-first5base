@@ -101,14 +101,12 @@ f5base_packages_required:
   - debsums
   - needrestart
   - locales
-  - software-properties-common
   - htop
 
 
 f5base_unattended_up_packages:
   - {name: 'unattended-upgrades', state: 'present'}
   - {name: 'apt-listchanges', state: 'present'}
-  - {name: 'update-notifier', state: 'present'}
 
 f5base_packages_started:
   - rsync

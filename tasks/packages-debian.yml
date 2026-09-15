@@ -47,7 +47,7 @@
 
 - name: Install packages | Required packages that may not be installed | Debian
   apt:
-    name: "{{f5base_packages_required}}"
+    name: "{{ f5base_packages_required + f5base_packages_distro }}"
     state: present
   become: true
 
@@ -75,7 +75,7 @@
   apt:
     name: "{{ item.name }}"
     state: "{{ item.state }}"
-  with_items: "{{f5base_unattended_up_packages}}"
+  with_items: "{{ f5base_unattended_up_packages + f5base_unattended_up_packages_distro }}"
   become: true
 
 - name: check if tmp is mounted as tmp_is_noexec

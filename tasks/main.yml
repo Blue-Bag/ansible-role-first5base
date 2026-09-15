@@ -4,6 +4,17 @@
 # Essentials
 # http://www.howtoforge.com/how-to-configure-automatic-updates-on-debian-wheezy
 
+- name: Include OS-family variables
+  include_vars: "{{ ansible_facts['os_family'] }}.yml"
+
+- name: Include distribution and version-specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_distribution }}.yml"
+      skip: true
+
 - import_tasks: packages-debian.yml
   when: ansible_facts['os_family'] == 'Debian'
 
