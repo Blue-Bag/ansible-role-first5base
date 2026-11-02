@@ -96,6 +96,14 @@ one in the .bashrc/.bash_profile for that user
     - "en_GB.UTF-8"
     - "en_US.UTF-8"
 ```
+##### Add a swap file
+For hosts with no swap partition, such as DigitalOcean droplets. It creates the file, adds it to `/etc/fstab`, turns it on, and sets `vm.swappiness` in `/etc/sysctl.d/99-swappiness.conf`. An existing swap file is left at its current size. Tag: `swap`.
+```
+  f5base_doswap: false
+  f5base_swap_file: /swapfile
+  f5base_swap_size_mb: 2048
+  f5base_swap_swappiness: 10
+```
   #### Name Server Update
 
 ```

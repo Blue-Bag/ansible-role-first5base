@@ -1,0 +1,51 @@
+---
+# Swap file, for hosts with no swap partition (e.g. DigitalOcean droplets)
+
+- name: Swap | Check for an existing swap file
+  ansible.builtin.stat:
+    path: "{{ f5base_swap_file }}"
+  register: _f5base_swap_stat
+
+- name: Swap | Create the swap file
+  ansible.builtin.command: "fallocate -l {{ f5base_swap_size_mb }}M {{ f5base_swap_file }}"
+  when: not _f5base_swap_stat.stat.exists
+
+- name: Swap | Set swap file permissions
+  ansible.builtin.file:
+    path: "{{ f5base_swap_file }}"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Swap | Format the swap file
+  ansible.builtin.command: "mkswap {{ f5base_swap_file }}"
+  when: not _f5base_swap_stat.stat.exists
+
+- name: Swap | Add the swap file to fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^{{ f5base_swap_file }}\s'
+    line: "{{ f5base_swap_file }} none swap sw 0 0"
+
+- name: Swap | Check whether the swap file is active
+  ansible.builtin.command: swapon --show=NAME --noheadings
+  register: _f5base_swap_active
+  changed_when: false
+  check_mode: false
+
+- name: Swap | Enable the swap file
+  ansible.builtin.command: "swapon {{ f5base_swap_file }}"
+  when: f5base_swap_file not in _f5base_swap_active.stdout_lines
+
+- name: Swap | Set vm.swappiness
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-swappiness.conf
+    content: "vm.swappiness = {{ f5base_swap_swappiness }}\n"
+    owner: root
+    group: root
+    mode: "0644"
+  register: _f5base_swappiness
+
+- name: Swap | Apply vm.swappiness
+  ansible.builtin.command: sysctl -q -p /etc/sysctl.d/99-swappiness.conf
+  when: _f5base_swappiness.changed

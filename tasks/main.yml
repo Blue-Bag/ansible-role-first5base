@@ -36,6 +36,10 @@
   when: f5base_dosysstat|bool
   tags: [configuration,sysstat]
 
+- import_tasks: swap.yml
+  when: f5base_doswap|bool
+  tags: [configuration, swap]
+
 - import_tasks: host.yml
   when: f5base_dohostname|bool
   tags: [configuration, hosts]

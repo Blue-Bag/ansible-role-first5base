@@ -173,3 +173,9 @@ f5base_sysstat:
    packages:
      - sysstat
    service: sysstat
+
+# Swap file (off by default)
+f5base_doswap: false
+f5base_swap_file: /swapfile
+f5base_swap_size_mb: 2048
+f5base_swap_swappiness: 10
