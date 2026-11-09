@@ -47,7 +47,7 @@
       when:
         - ansible_hostname != item
         - item not in groups['local']
-        - hostvars[item]['ansible_facts']['default_ipv4']['address'] != ansible_ssh_host
+        - hostvars[item]['ansible_facts']['default_ipv4']['address'] != ansible_host
       with_items: "{{ groups[f5base_hosts_group] }}"
   when: hostvars is defined
   tags: [configuration, hosts]
@@ -78,8 +78,8 @@
 - name: Replace existing hosts entry for FQDN
   lineinfile:
     dest: /etc/hosts
-    regexp: "^{{ ansible_ssh_host }}(.*)"
-    line: "{{ ansible_ssh_host }}\t{{ inventory_hostname }} {{ inventory_hostname_short }}"
+    regexp: "^{{ ansible_host }}(.*)"
+    line: "{{ ansible_host }}\t{{ inventory_hostname }} {{ inventory_hostname_short }}"
     state: present
     backrefs: true
     backup: true
