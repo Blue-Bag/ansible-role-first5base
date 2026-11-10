@@ -52,15 +52,37 @@
   when: f5base_domotd|bool
 
 # Disable some services we don't need
+- name: Gather service facts
+  service_facts:
+  when: srv_to_stop | length > 0 and inventory_hostname not in groups['local']
+  tags: [base, services]
+
+# Stop the socket first, otherwise socket activation restarts the service
+- name: Disable sockets of unrequired services
+  systemd:
+     name: "{{ item }}.socket"
+     state: stopped
+     enabled: false
+  with_items: "{{ srv_to_stop }}"
+  when:
+    - inventory_hostname not in groups['local']
+    - (item ~ '.service') in ansible_facts.services
+  register: f5base_socket_stop
+  failed_when:
+    - f5base_socket_stop is failed
+    - "'Could not find the requested service' not in (f5base_socket_stop.msg | default(''))"
+  tags: [base, services]
+
 - name: Disable Unrequired services
   service:
      name: "{{ item }}"
      state: stopped
      enabled: false
   with_items: "{{ srv_to_stop }}"
-  when: inventory_hostname not in groups['local']
+  when:
+    - inventory_hostname not in groups['local']
+    - (item ~ '.service') in ansible_facts.services
   tags: [base, services]
-  ignore_errors: true
 
 - import_tasks: gpg.yml
   when: f5base_do_gpg | bool
