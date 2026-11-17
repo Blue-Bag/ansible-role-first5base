@@ -108,6 +108,9 @@ f5base_unattended_up_packages:
   - {name: 'unattended-upgrades', state: 'present'}
   - {name: 'apt-listchanges', state: 'present'}
 
+# packages for some servers only (set per group or host, e.g. smartmontools on physical machines)
+f5base_packages_extra: []
+
 f5base_packages_started:
   - rsync
 

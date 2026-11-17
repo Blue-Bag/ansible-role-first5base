@@ -47,7 +47,7 @@
 
 - name: Install packages | Required packages that may not be installed | Debian
   apt:
-    name: "{{ f5base_packages_required + f5base_packages_distro }}"
+    name: "{{ f5base_packages_required + f5base_packages_distro + f5base_packages_extra }}"
     state: present
   become: true
 
