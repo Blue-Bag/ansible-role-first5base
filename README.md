@@ -104,6 +104,11 @@ For hosts with no swap partition, such as DigitalOcean droplets. It creates the 
   f5base_swap_size_mb: 2048
   f5base_swap_swappiness: 10
 ```
+##### needrestart restart mode
+needrestart is installed by default. `a` restarts affected services automatically after package upgrades (needed for long-running JVMs such as Jenkins after a JDK update); `l` lists them only. Empty leaves Debian's interactive default and removes the role's drop-in. Written to `/etc/needrestart/conf.d/50-first5base.conf`. Tag: `needrestart`.
+```
+  f5base_needrestart_mode: ''
+```
   #### Name Server Update
 
 ```

@@ -51,6 +51,23 @@
     state: present
   become: true
 
+- name: Set needrestart restart mode | Debian
+  ansible.builtin.copy:
+    content: "$nrconf{restart} = '{{ f5base_needrestart_mode }}';\n"
+    dest: /etc/needrestart/conf.d/50-first5base.conf
+    owner: root
+    group: root
+    mode: '0644'
+  when: f5base_needrestart_mode | length > 0
+  tags: [base, needrestart]
+
+- name: Remove needrestart restart mode when not set | Debian
+  ansible.builtin.file:
+    path: /etc/needrestart/conf.d/50-first5base.conf
+    state: absent
+  when: f5base_needrestart_mode | length == 0
+  tags: [base, needrestart]
+
 
 - name: Ensure required packages are running and enabled at system start. | Debian
   service:

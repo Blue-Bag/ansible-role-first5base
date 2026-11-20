@@ -111,6 +111,10 @@ f5base_unattended_up_packages:
 # packages for some servers only (set per group or host, e.g. smartmontools on physical machines)
 f5base_packages_extra: []
 
+# needrestart restart mode: 'a' restarts services automatically after upgrades,
+# 'l' only lists them. Empty leaves the Debian default (interactive).
+f5base_needrestart_mode: ''
+
 f5base_packages_started:
   - rsync
 
